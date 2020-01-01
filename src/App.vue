@@ -1,17 +1,45 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <myHeader/>
+    <router-view/>
+    <myFooter/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import myHeader from '@/components/header'
+import toDoList from '@/components/ToDoList'
+import addTodo from '@/components/addTodo'
+import myFooter from '@/components/footer'
 export default {
   name: 'app',
+  data(){
+    return{
+      todos:[]
+    }
+  },
+  mounted(){
+    fetch('https://jsonplaceholder.typicode.com/todos?_limit=3')
+            .then(response => response.json())
+            .then(json => {
+              this.todos = json
+            })
+  },
+  methods: {
+    removeTodo(id){
+      this.todos = this.todos.filter(t => t.id !== id )
+    },
+    addTodo(todo){
+      this.todos.push(todo)
+
+
+    }
+  },
   components: {
-    HelloWorld
+    toDoList,
+    addTodo,
+    myHeader,
+    myFooter
   }
 }
 </script>
